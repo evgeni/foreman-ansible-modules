@@ -111,7 +111,7 @@ def main():
     )
 
     with module.api_connection():
-        module.datastream_run()
+        module.run()
 
 
 if __name__ == '__main__':
