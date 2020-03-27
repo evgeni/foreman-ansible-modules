@@ -83,11 +83,11 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/api/compliance/tailoring_files?search=name%3D%22tailoring_file_name%22&per_page=4294967296
+    uri: https://foreman.example.org/api/compliance/tailoring_files?search=name%3D%22scap_tailoring_file_name%22&per_page=4294967296
   response:
     body:
       string: "{\n  \"total\": 0,\n  \"subtotal\": 0,\n  \"page\": 1,\n  \"per_page\"\
-        : 4294967296,\n  \"search\": \"name=\\\"tailoring_file_name\\\"\",\n  \"sort\"\
+        : 4294967296,\n  \"search\": \"name=\\\"scap_tailoring_file_name\\\"\",\n  \"sort\"\
         : {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": []\n}\n"
     headers:
       Cache-Control:
@@ -311,11 +311,11 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/api/compliance/tailoring_files?search=name%3D%22tailoring_file_name%22&per_page=4294967296
+    uri: https://foreman.example.org/api/compliance/tailoring_files?search=name%3D%22scap_tailoring_file_name%22&per_page=4294967296
   response:
     body:
       string: "{\n  \"total\": 0,\n  \"subtotal\": 0,\n  \"page\": 1,\n  \"per_page\"\
-        : 4294967296,\n  \"search\": \"name=\\\"tailoring_file_name\\\"\",\n  \"sort\"\
+        : 4294967296,\n  \"search\": \"name=\\\"scap_tailoring_file_name\\\"\",\n  \"sort\"\
         : {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": []\n}\n"
     headers:
       Cache-Control:
@@ -372,7 +372,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: '{"tailoring_file": {"name": "tailoring_file_name", "scap_file": "<?xml
+    body: '{"tailoring_file": {"name": "scap_tailoring_file_name", "scap_file": "<?xml
       version=\"1.0\" encoding=\"UTF-8\"?>\n<xccdf:Tailoring xmlns:xccdf=\"http://checklists.nist.gov/xccdf/1.2\"
       id=\"xccdf_scap-workbench_tailoring_default\">\n  <xccdf:benchmark href=\"/tmp/scap-workbench-nlKqUD/ssg-firefox-ds.xml\"/>\n  <xccdf:version
       time=\"2020-03-26T20:20:49\">1</xccdf:version>\n  <xccdf:Profile id=\"xccdf_org.theforeman_profile_fam_test_fixtures\"
@@ -413,7 +413,7 @@ interactions:
     uri: https://foreman.example.org/api/compliance/tailoring_files
   response:
     body:
-      string: '{"id":1,"name":"tailoring_file_name","scap_file":"\u003c?xml version=\"1.0\"
+      string: '{"id":1,"name":"scap_tailoring_file_name","scap_file":"\u003c?xml version=\"1.0\"
         encoding=\"UTF-8\"?\u003e\n\u003cxccdf:Tailoring xmlns:xccdf=\"http://checklists.nist.gov/xccdf/1.2\"
         id=\"xccdf_scap-workbench_tailoring_default\"\u003e\n  \u003cxccdf:benchmark
         href=\"/tmp/scap-workbench-nlKqUD/ssg-firefox-ds.xml\"/\u003e\n  \u003cxccdf:version

@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: foreman_tailoring_file
+module: foreman_scap_tailoring_file
 short_description: Manage Foreman SCAP tailoring files using Foreman API.
 description:
   - Create, Update and Delete Foreman SCAP tailoring files using Foreman API.
@@ -51,7 +51,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: Create SCAP tailoring file
-  foreman_tailoring_file:
+  foreman_scap_tailoring_file:
     name: "Red Hat firefox default content"
     scap_file: "/home/user/Downloads/ssg-firefox-ds-tailoring.xml"
     original_filename: "ssg-firefox-ds-tailoring.xml"
@@ -65,7 +65,7 @@ EXAMPLES = '''
     state: present
 
 - name: Update SCAP tailoring file
-  foreman_tailoring_file:
+  foreman_scap_tailoring_file:
     name: "Red Hat firefox default content"
     updated_name: "Updated tailoring file name"
     scap_file: "/home/user/Downloads/updated-ssg-firefox-ds-tailoring.xml"
@@ -82,7 +82,7 @@ EXAMPLES = '''
     state: present
 
 - name: Delete SCAP tailoring file
-  foreman_tailoring_file:
+  foreman_scap_tailoring_file:
     name: "Red Hat firefox default content"
     server_url: "https://foreman.example.com"
     username: "admin"
