@@ -989,7 +989,7 @@ class ForemanDataStreamModule(ForemanTaxonomicEntityAnsibleModule):
         foreman_spec.update(kwargs.pop('foreman_spec', {}))
         super(ForemanDataStreamModule, self).__init__(foreman_spec=foreman_spec, **kwargs)
 
-    def run(self):
+    def run(self, **kwargs):
         entity = self.lookup_entity('entity')
 
         if not self.desired_absent:
@@ -1010,7 +1010,7 @@ class ForemanDataStreamModule(ForemanTaxonomicEntityAnsibleModule):
                 if entity['digest'] in [digest, digest_stripped]:
                     self.foreman_params.pop('scap_file')
 
-        super(ForemanDataStreamModule, self).run()
+        super(ForemanDataStreamModule, self).run(**kwargs)
 
 
 class KatelloAnsibleModule(KatelloMixin, ForemanAnsibleModule):
