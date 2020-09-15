@@ -3,9 +3,6 @@
 # Copyright (c) 2018 Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-# pylint: disable=raise-missing-from
-# pylint: disable=super-with-arguments
-
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
@@ -166,7 +163,7 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
                 # process results
                 # FIXME: This assumes 'return type' matches a specific query,
                 #        it will break if we expand the queries and they dont have different types
-                if 'results' not in json:  # pylint: disable=no-else-break
+                if 'results' not in json:
                     # /hosts/:id dos not have a 'results' key
                     results = json
                     break
