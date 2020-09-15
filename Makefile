@@ -11,7 +11,7 @@ DEPENDENCIES := $(METADATA) $(foreach PLUGIN_TYPE,$(PLUGIN_TYPES),$(_$(PLUGIN_TY
 
 PYTHON_VERSION = $(shell python -c 'import sys; print("{}.{}".format(sys.version_info.major, sys.version_info.minor))')
 COLLECTION_COMMAND ?= ansible-galaxy
-SANITY_OPTS = --venv
+SANITY_OPTS = --venv --python $(PYTHON_VERSION)
 TEST =
 FLAGS =
 PYTEST = pytest -n 4 --boxed -v
@@ -43,7 +43,7 @@ lint: $(MANIFEST) | tests/test_playbooks/vars/server.yml
 
 sanity: $(MANIFEST)
 	# Fake a fresh git repo for ansible-test
-	cd $(<D) ; git init ; echo tests > .gitignore ; ansible-test sanity $(SANITY_OPTS) --python $(PYTHON_VERSION)
+	cd $(<D) ; git init ; echo tests > .gitignore ; ansible-test sanity $(SANITY_OPTS)
 
 test: $(MANIFEST) | tests/test_playbooks/vars/server.yml
 	$(PYTEST) $(TEST)
