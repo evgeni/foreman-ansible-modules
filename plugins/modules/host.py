@@ -227,6 +227,7 @@ options:
           - Identifiers of attached interfaces, e.g. ['eth1', 'eth2'].
           - For bond interfaces those are the slaves. Only for bond and bridges interfaces.
         type: list
+        elements: str
       bond_options:
         description:
           - Space separated options, e.g. miimon=100. Only for bond interfaces.
