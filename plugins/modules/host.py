@@ -385,7 +385,7 @@ def main():
                 mac=dict(),
                 ip=dict(),
                 ip6=dict(),
-                type=dict(default='interface', choices=['interface', 'bmc', 'bond', 'bridge']),
+                type=dict(choices=['interface', 'bmc', 'bond', 'bridge']),
                 name=dict(),
                 subnet_id=dict(type='int'),
                 subnet6_id=dict(type='int'),
