@@ -138,7 +138,7 @@ options:
         type: str
       type:
         description:
-          - Interface type, e.g. bmc. Default is interface
+          - Interface type.
         type: str
         choices:
           - 'interface'
