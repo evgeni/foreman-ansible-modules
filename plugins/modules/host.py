@@ -145,7 +145,6 @@ options:
           - 'bmc'
           - 'bond'
           - 'bridge'
-        default: interface
       name:
         description:
           - Interface's DNS name
