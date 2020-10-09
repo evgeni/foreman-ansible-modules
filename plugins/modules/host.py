@@ -410,7 +410,7 @@ def main():
                     'balance-tlb',
                     'balance-alb',
                 ]),
-                attached_devices=dict(type='list'),
+                attached_devices=dict(type='list', elements='str'),
                 bond_options=dict(),
                 compute_attributes=dict(type='dict'),
             )),
