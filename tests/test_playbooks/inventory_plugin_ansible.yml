@@ -21,3 +21,5 @@
     - theforeman.foreman
   tasks:
     - include_tasks: tasks/inventory_plugin.yml
+    - fail:
+        msg: lol

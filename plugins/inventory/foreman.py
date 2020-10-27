@@ -367,9 +367,11 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
     def _populate_report_api(self):
         self.groups = dict()
         self.hosts = dict()
+        self.display.warning("LOL, REPORT API")
         try:
             inventory_report_response = self._post_request()
         except Exception:
+            self.display.warning("Could not use the Report API to fetch inventory, falling back to Hosts API.")
             self._populate_host_api()
             return
         self.group_prefix = self.get_option('group_prefix')
