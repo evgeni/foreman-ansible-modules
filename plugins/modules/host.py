@@ -355,7 +355,75 @@ from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper 
     ensure_puppetclasses,
     ForemanEntityAnsibleModule,
     HostMixin,
+    _foreman_spec_helper,
 )
+
+interfaces_spec = dict(
+    id=dict(invisible=True),
+    mac=dict(),
+    ip=dict(),
+    ip6=dict(),
+    type=dict(choices=['interface', 'bmc', 'bond', 'bridge']),
+    name=dict(),
+    subnet_id=dict(type='int'),
+    subnet6_id=dict(type='int'),
+    domain_id=dict(type='int'),
+    identifier=dict(),
+    managed=dict(type='bool'),
+    primary=dict(type='bool'),
+    provision=dict(type='bool'),
+    username=dict(),
+    password=dict(no_log=True),
+    provider=dict(choices=['IPMI', 'SSH']),
+    virtual=dict(type='bool'),
+    tag=dict(),
+    mtu=dict(type='int'),
+    attached_to=dict(),
+    mode=dict(choices=[
+        'balance-rr',
+        'active-backup',
+        'balance-xor',
+        'broadcast',
+        '802.3ad',
+        'balance-tlb',
+        'balance-alb',
+    ]),
+    attached_devices=dict(type='list', elements='str'),
+    bond_options=dict(),
+    compute_attributes=dict(type='dict'),
+)
+interfaces_foreman_spec, interfaces_ansible_spec = _foreman_spec_helper(interfaces_spec)
+
+def ensure_host_interfaces(module, entity, interfaces):
+    scope = {'host_id': entity['id']}
+
+    current_interfaces = module.list_resource('interfaces', params=scope)
+    current_interfaces_ids = {x['id'] for x in current_interfaces}
+    expected_interfaces_ids = set()
+
+    for interface in interfaces:
+        for possible_identifier in ['identifier', 'name']:
+            if possible_identifier in interface:
+                unique_identifier = possible_identifier
+                break
+        else:
+            unique_identifier = None
+            # TODO: this shouldn't happen
+
+        if 'mac' in interface:
+            interface['mac'] = interface['mac'].lower()
+
+        existing_interface = next((x for x in current_interfaces if x.get(unique_identifier) == interface[unique_identifier]), None)
+        updated_interface = (existing_interface or {}).copy()
+        updated_interface.update(interface)
+
+        module.ensure_entity('interfaces', updated_interface, existing_interface, params=scope, state='present', foreman_spec=interfaces_foreman_spec)
+
+        if 'id' in updated_interface:
+            expected_interfaces_ids.add(updated_interface['id'])
+
+    for leftover_interface in current_interfaces_ids - expected_interfaces_ids:
+        module.ensure_entity('interfaces', {}, {'id': leftover_interface}, params=scope, state='absent', foreman_spec=interfaces_foreman_spec)
 
 
 class ForemanHostModule(HostMixin, ForemanEntityAnsibleModule):
@@ -381,39 +449,7 @@ def main():
             provision_method=dict(choices=['build', 'image', 'bootdisk']),
             image=dict(type='entity', scope=['compute_resource']),
             compute_attributes=dict(type='dict'),
-            interfaces_attributes=dict(type='list', elements='dict', options=dict(
-                mac=dict(),
-                ip=dict(),
-                ip6=dict(),
-                type=dict(choices=['interface', 'bmc', 'bond', 'bridge']),
-                name=dict(),
-                subnet_id=dict(type='int'),
-                subnet6_id=dict(type='int'),
-                domain_id=dict(type='int'),
-                identifier=dict(),
-                managed=dict(type='bool'),
-                primary=dict(type='bool'),
-                provision=dict(type='bool'),
-                username=dict(),
-                password=dict(no_log=True),
-                provider=dict(choices=['IPMI', 'SSH']),
-                virtual=dict(type='bool'),
-                tag=dict(),
-                mtu=dict(type='int'),
-                attached_to=dict(),
-                mode=dict(choices=[
-                    'balance-rr',
-                    'active-backup',
-                    'balance-xor',
-                    'broadcast',
-                    '802.3ad',
-                    'balance-tlb',
-                    'balance-alb',
-                ]),
-                attached_devices=dict(type='list', elements='str'),
-                bond_options=dict(),
-                compute_attributes=dict(type='dict'),
-            )),
+            interfaces_attributes=dict(type='list', elements='dict', options=interfaces_ansible_spec),
         ),
         mutually_exclusive=[
             ['owner', 'owner_group']
@@ -452,10 +488,22 @@ def main():
     with module.api_connection():
         if not module.desired_absent:
             module.auto_lookup_entities()
+        entity = module.lookup_entity('entity')
+
+        if entity and 'interfaces_attributes' in module.foreman_params:
+            interfaces = module.foreman_params.pop('interfaces_attributes')
+        else:
+            interfaces = None
+
         expected_puppetclasses = module.foreman_params.pop('puppetclasses', None)
+
         entity = module.run()
-        if not module.desired_absent and 'environment_id' in entity:
-            ensure_puppetclasses(module, 'host', entity, expected_puppetclasses)
+
+        if not module.desired_absent:
+            if 'environment_id' in entity:
+                ensure_puppetclasses(module, 'host', entity, expected_puppetclasses)
+            if interfaces is not None:
+                ensure_host_interfaces(module, entity, interfaces)
 
 
 if __name__ == '__main__':
