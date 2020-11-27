@@ -11,6 +11,8 @@ import yaml
 
 from .conftest import TEST_PLAYBOOKS, INVENTORY_PLAYBOOKS
 
+TEST_PLAYBOOKS = []
+
 IGNORED_WARNINGS = [
     "Activation Key 'Test Activation Key Copy' already exists.",
 ]
