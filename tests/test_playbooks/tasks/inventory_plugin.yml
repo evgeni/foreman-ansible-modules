@@ -111,6 +111,12 @@
 - name: Refresh inventory to ensure new instances exist in inventory
   meta: refresh_inventory
 
+- name: fetch foreman logs
+  command: docker logs "{{ _foreman_host }}"
+
+- name: fetch foreman logs
+  command: docker logs "{{ _foreman_host }}dynflow"
+
 - name: test that all groups are present
   assert:
     that: >
