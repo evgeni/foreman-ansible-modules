@@ -169,6 +169,7 @@ options:
       - list of tags to sync for Container Image repository
       - only available for I(content_type=docker)
       - Deprecated since Katello 4.4
+      - Removed in Katello 4.10
     type: list
     elements: str
   deb_releases:
